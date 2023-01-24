@@ -13,6 +13,7 @@ S21Matrix::S21Matrix(int rows, int cols) {
   allocateMemory(this->rows_, this->cols_);
 };
 
+//  Copy
 S21Matrix::S21Matrix(const S21Matrix& other) {
   this->cols_ = other.cols_;
   this->rows_ = other.rows_;
@@ -23,6 +24,7 @@ S21Matrix::S21Matrix(const S21Matrix& other) {
   }
 };
 
+//  Moving
 S21Matrix::S21Matrix(S21Matrix&& other) {
 };
   
@@ -89,8 +91,8 @@ S21Matrix S21Matrix::operator *= (const S21Matrix &other) {
   return S21Matrix();
 };
 
-double& S21Matrix::operator () (int rows, int cols) {
-
+double& S21Matrix::operator () (int row, int col) {
+  return this->matrix_[row][col];
 };
 
 void S21Matrix::allocateMemory(const int rows, const int cols) {
