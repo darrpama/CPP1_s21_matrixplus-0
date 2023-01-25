@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 class S21Matrix {
 private:
