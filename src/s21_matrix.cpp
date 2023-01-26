@@ -31,7 +31,6 @@ S21Matrix::S21Matrix(int rows, int cols) {        //  Constr
   this->rows_ = rows;
   this->cols_ = cols;
   allocateMemory(this->rows_, this->cols_);
-
 };
 
 S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
@@ -83,9 +82,36 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
   return answer;
 };
 
-void S21Matrix::SumMatrix(const S21Matrix& other) {};
-void S21Matrix::SubMatrix(const S21Matrix& other) {};
-void S21Matrix::MulNumber(const S21Matrix& other) {};
+void S21Matrix::SumMatrix(const S21Matrix& other) {
+  if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
+    throw std::invalid_argument("Size of summing matrix should be equal");
+  }
+  for (int i = 0; i < rows_; i++) {
+    for (int j = 0; j < cols_; j++) {
+      this->matrix_[i][j] += other.matrix_[i][j];
+    }
+  }
+};
+
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+  if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
+    throw std::invalid_argument("Size of summing matrix should be equal");
+  }
+  for (int i = 0; i < rows_; i++) {
+    for (int j = 0; j < cols_; j++) {
+      this->matrix_[i][j] -= other.matrix_[i][j];
+    }
+  }
+};
+
+void S21Matrix::MulNumber(const double num) {
+  for (int i = 0; i < rows_; i++) {
+    for (int j = 0; j < cols_; j++) {
+      this->matrix_[i][j] *= num;
+    }
+  }
+};
+
 void S21Matrix::MulMatrix(const S21Matrix& other) {};
 
 S21Matrix S21Matrix::Transpose() {
