@@ -1,5 +1,4 @@
 #include "s21_matrix.h"
-#include <stdexcept>
 
 void S21Matrix::allocateMemory (const int rows, const int cols) {
   this->matrix_ = new double *[rows];
@@ -45,17 +44,16 @@ S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
   }
 };
 
-S21Matrix::S21Matrix(S21Matrix&& other) {         //  Moving
-  this->cols_ = other.cols_;
-  this->rows_ = other.rows_;
-  for (int i = 0; i < other.rows_; i++) {
-    for (int j = 0; j < other.cols_; j++) {
-      this->matrix_[i][j] = other.matrix_[i][j];
-    }
-  }
+S21Matrix::S21Matrix(S21Matrix&& other)           //  Moving
+  : matrix_(nullptr)
+  , cols_(0)
+  , rows_(0) {
+  matrix_ = other.matrix_;
+  rows_ = other.rows_;
+  cols_ = other.cols_;
   other.matrix_ = nullptr;
-  other.cols_ = 0;
   other.rows_ = 0;
+  other.cols_ = 0;
 };
 
 S21Matrix::~S21Matrix() {
@@ -65,12 +63,19 @@ S21Matrix::~S21Matrix() {
 };
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
-  bool answer = false;
-  if (this->rows_ == other.rows_ && this->cols_ == other.cols_) {
+  bool answer = true;
+  if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
+    answer = false;
+  } else {
     for (int i = 0; i < rows_; i++) {
       for (int j = 0; j < cols_; j++) {
-        if (fabs(matrix_[i][j]) - other.matrix_[i][j] < 0.0000001) {
-
+        if (fabs(matrix_[i][j] - other.matrix_[i][j]) < 0.0000001) {
+          continue;
+        } else {
+          i = rows_;
+          j = cols_;
+          answer = false;
+          break;
         }
       }
     }
