@@ -112,7 +112,11 @@ void S21Matrix::MulNumber(const double num) {
   }
 };
 
-void S21Matrix::MulMatrix(const S21Matrix& other) {};
+void S21Matrix::MulMatrix(const S21Matrix& other) {
+  if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
+    throw std::invalid_argument("Size of summing matrix should be equal");
+  }
+};
 
 S21Matrix S21Matrix::Transpose() {
   return S21Matrix();
