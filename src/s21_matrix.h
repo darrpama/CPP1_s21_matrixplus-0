@@ -39,7 +39,8 @@ public:
   S21Matrix operator += (const S21Matrix &other);
   S21Matrix operator -= (const S21Matrix &other);
   S21Matrix operator *= (const S21Matrix &other);
-  double & operator () (int rows, int cols);
+  double & operator () (int row, int col);
+  double calc_minor (int row, int col);
   int GetRows();
   int GetCols();
   void FillMatrix(double value);

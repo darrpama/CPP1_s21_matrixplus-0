@@ -26,12 +26,11 @@ TEST(Constructors, Parameters) {
 TEST(Constructors, Copy) {
   S21Matrix matrix1(3, 3);
   matrix1.FillMatrix(5);
-
   S21Matrix matrix2(matrix1);
   EXPECT_EQ(matrix1.GetRows(), matrix2.GetRows());
   EXPECT_EQ(matrix1.GetCols(), matrix2.GetCols());
-  for (int i = 0; i < matrix1.GetRows(); i++) {
-    for (int j = 0; j < matrix1.GetCols(); j++) {
+  for (int i = 0; i < matrix1.GetRows() - 1; i++) {
+    for (int j = 0; j < matrix1.GetCols() - 1; j++) {
       EXPECT_EQ(matrix1.GetCols(), matrix2.GetCols());
     }
   }

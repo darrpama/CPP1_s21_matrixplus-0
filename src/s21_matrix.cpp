@@ -20,7 +20,6 @@ void S21Matrix::freeMemory() {
 S21Matrix::S21Matrix() {                          //  Constr
   this->rows_ = 2;
   this->cols_ = 2;
-  this->matrix_ = new double *[rows_];
   allocateMemory(this->rows_, this->cols_);
 };
 
@@ -149,6 +148,9 @@ S21Matrix S21Matrix::CalcComplements() {
   if (!matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
   }
+  if (this->rows_ != this->cols_) {
+    throw std::invalid_argument("Matrix should be square");
+  }
   return S21Matrix();
 };
 
@@ -156,12 +158,28 @@ double S21Matrix::Determinant() {
   if (!matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
   }
-  return 1.0;
+  if (this->rows_ != this->cols_) {
+    throw std::invalid_argument("Matrix should be square");
+  }
+  double determinant = 0.0;
+  if (this->rows_ == 1) {
+    determinant = this->matrix_[0][0];
+  } else if (this->rows_ == 2) {
+    determinant = matrix_[0][0] * matrix_[1][1] - matrix_[0][1] * matrix_[1][0];
+  } else {
+    for (int i = 0; i < cols_; i++) {
+      determinant += matrix_[0][i] * calc_minor(0, i) * pow(-1, i);
+    }
+  }
+  return determinant;
 };
 
 S21Matrix S21Matrix::InverseMatrix() {
   if (!matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
+  }
+  if (this->rows_ != this->cols_) {
+    throw std::invalid_argument("Matrix should be sqare");
   }
   return S21Matrix();
 };
@@ -216,6 +234,18 @@ double& S21Matrix::operator () (int row, int col) {
   }
   return this->matrix_[row][col];
 };
+
+double S21Matrix::calc_minor(int row, int col) {
+  S21Matrix minor(this->rows_ - 1, this->cols_ - 1);
+  for (int i = 0; i < minor.GetRows(); i++) {
+    for (int j = 0; j < minor.GetCols(); j++) {
+      if (i != row || j != col) {
+        minor.matrix_[i][j] = this->matrix_[i][j];
+      }
+    }
+  }
+  return minor.Determinant();
+}
 
 int S21Matrix::GetRows() {
   return this->rows_;
