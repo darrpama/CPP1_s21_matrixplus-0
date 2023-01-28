@@ -3,10 +3,11 @@
 # of the file system>
 #.PHONY clean
 
-test: clean
+test:
 	g++ -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror -std=c++17 s21_matrix.cpp unit_tests.cpp -o test.out -lgtest -lpthread
 	./test.out
 
 clean:
 	rm *.gcno
+	rm *.gcda
 	rm *.out
