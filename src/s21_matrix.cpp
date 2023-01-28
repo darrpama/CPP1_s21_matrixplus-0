@@ -25,7 +25,7 @@ S21Matrix::S21Matrix() {                          //  Constr
 };
 
 S21Matrix::S21Matrix(int rows, int cols) {        //  Constr
-  if (rows_ <= 0 || cols_ <= 0) {
+  if (rows <= 0 || cols <= 0) {
     throw std::invalid_argument("Incorrect size of matrix, each should be > 0");
   }
   this->rows_ = rows;
@@ -43,10 +43,10 @@ S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
   }
 };
 
-S21Matrix::S21Matrix(S21Matrix&& other)           //  Moving
-  : matrix_(nullptr)
-  , cols_(0)
-  , rows_(0) {
+S21Matrix::S21Matrix(S21Matrix&& other) {          //  Moving
+  // : matrix_(nullptr)
+  // , cols_(0)
+  // , rows_(0) {
   matrix_ = other.matrix_;
   rows_ = other.rows_;
   cols_ = other.cols_;
@@ -113,8 +113,8 @@ void S21Matrix::MulNumber(const double num) {
 };
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-  if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
-    throw std::invalid_argument("Size of summing matrix should be equal");
+  if (this->cols_ != other.rows_) {
+    throw std::invalid_argument("A * B; num cols of A should be equal num rows of B");
   }
 };
 
@@ -135,35 +135,44 @@ S21Matrix S21Matrix::InverseMatrix() {
 };
 
 S21Matrix S21Matrix::operator + (const S21Matrix &other) {
-  return S21Matrix();
+  S21Matrix result(*this);
+  result.SumMatrix(other);
+  return result;
 };
 
 S21Matrix S21Matrix::operator - (const S21Matrix &other) {
-  return S21Matrix();
+  S21Matrix result(*this);
+  result.SubMatrix(other);
+  return result;
 };
 
 S21Matrix S21Matrix::operator * (const S21Matrix &other) {
-  return S21Matrix();
+  S21Matrix result(*this);
+  result.MulMatrix(other);
+  return result;
 };
 
 bool S21Matrix::operator == (const S21Matrix &other) {
-  return true;
+  return EqMatrix(other);
 };
 
 bool S21Matrix::operator != (const S21Matrix &other) {
-  return true;
+  return !EqMatrix(other);
 };
 
 S21Matrix S21Matrix::operator += (const S21Matrix &other) {
-  return S21Matrix();
+  this->SumMatrix(other);
+  return *this;
 };
 
 S21Matrix S21Matrix::operator -= (const S21Matrix &other) {
-  return S21Matrix();
+  this->SubMatrix(other);
+  return *this;
 };
 
 S21Matrix S21Matrix::operator *= (const S21Matrix &other) {
-  return S21Matrix();
+  this->MulMatrix(other);
+  return *this;
 };
 
 double& S21Matrix::operator () (int row, int col) {
@@ -199,6 +208,3 @@ void S21Matrix::FillMatrix(double value) {
   }
 }
 
-int main(void) {
-  return 0;
-}
