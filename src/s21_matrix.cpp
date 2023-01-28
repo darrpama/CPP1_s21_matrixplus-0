@@ -36,6 +36,7 @@ S21Matrix::S21Matrix(int rows, int cols) {        //  Constr
 S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
   this->cols_ = other.cols_;
   this->rows_ = other.rows_;
+  allocateMemory(this->rows_, this->cols_);
   for (int i = 0; i < other.rows_; i++) {
     for (int j = 0; j < other.cols_; j++) {
       this->matrix_[i][j] = other.matrix_[i][j];
