@@ -181,7 +181,10 @@ S21Matrix S21Matrix::InverseMatrix() {
   if (this->rows_ != this->cols_) {
     throw std::invalid_argument("Matrix should be sqare");
   }
-  return S21Matrix();
+  double determinant = this.Determinant();
+  S21Matrix inverseMatrix = this.CalcComplements();
+  inverseMatrix.MulNumber(1.0/determinant);
+  return inverseMatrix;
 };
 
 S21Matrix S21Matrix::operator + (const S21Matrix &other) {
