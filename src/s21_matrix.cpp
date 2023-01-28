@@ -8,13 +8,13 @@ void S21Matrix::allocateMemory (const int rows, const int cols) {
 };
 
 void S21Matrix::freeMemory() {
-  for (int i = 0; i < rows_; i++) {
+  for (int i = 0; i < this->rows_; i++) {
     delete [] matrix_[i];
   }
   delete matrix_;
-  rows_ = 0;
-  cols_ = 0;
-  matrix_ = nullptr;
+  this->rows_ = 0;
+  this->cols_ = 0;
+  this->matrix_ = nullptr;
 };
 
 S21Matrix::S21Matrix() {                          //  Constr
@@ -45,30 +45,30 @@ S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
 };
 
 S21Matrix::S21Matrix(S21Matrix&& other) {          //  Moving
-  matrix_ = other.matrix_;
-  rows_ = other.rows_;
-  cols_ = other.cols_;
+  this->matrix_ = other.matrix_;
+  this->rows_ = other.rows_;
+  this->cols_ = other.cols_;
   other.matrix_ = nullptr;
   other.rows_ = 0;
   other.cols_ = 0;
 };
 
 S21Matrix::~S21Matrix() {
-  if (matrix_ != nullptr) {
+  if (this->matrix_ != nullptr) {
     freeMemory();
   }
 };
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
-  if (!matrix_ || other.matrix_) {
+  if (!this->matrix_ || other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
   bool answer = true;
   if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
     answer = false;
   } else {
-    for (int i = 0; i < rows_; i++) {
-      for (int j = 0; j < cols_; j++) {
+    for (int i = 0; i < this->rows_; i++) {
+      for (int j = 0; j < this->cols_; j++) {
         if (fabs(matrix_[i][j] - other.matrix_[i][j]) < 0.0000001) {
           continue;
         } else {
@@ -84,46 +84,46 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 };
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-  if (!matrix_ || other.matrix_) {
+  if (!this->matrix_ || other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
   if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
     throw std::invalid_argument("Size of summing matrix should be equal");
   }
-  for (int i = 0; i < rows_; i++) {
-    for (int j = 0; j < cols_; j++) {
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->cols_; j++) {
       this->matrix_[i][j] += other.matrix_[i][j];
     }
   }
 };
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-  if (!matrix_ || other.matrix_) {
+  if (!this->matrix_ || other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
   if (this->rows_ != other.rows_ || this->cols_ != other.cols_) {
     throw std::invalid_argument("Size of summing matrix should be equal");
   }
-  for (int i = 0; i < rows_; i++) {
-    for (int j = 0; j < cols_; j++) {
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->cols_; j++) {
       this->matrix_[i][j] -= other.matrix_[i][j];
     }
   }
 };
 
 void S21Matrix::MulNumber(const double num) {
-  if (!matrix_) {
+  if (!this->matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
   }
-  for (int i = 0; i < rows_; i++) {
-    for (int j = 0; j < cols_; j++) {
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->cols_; j++) {
       this->matrix_[i][j] *= num;
     }
   }
 };
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-  if (!matrix_ || other.matrix_) {
+  if (!this->matrix_ || other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
   if (this->cols_ != other.rows_) {
@@ -135,7 +135,14 @@ S21Matrix S21Matrix::Transpose() {
   if (!matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
   }
-  return S21Matrix();
+  // construct new matrix with rows = cols_ and cols = rows_
+  S21Matrix result(this->cols_, this->rows_);
+  for (int i = 0; i < result.GetRows(); i++) {
+    for (int j = 0; j < result.GetCols(); j++) {
+      result.matrix_[i][j] = this->matrix_[j][i];
+    }
+  }
+  return result;
 };
 
 S21Matrix S21Matrix::CalcComplements() {
