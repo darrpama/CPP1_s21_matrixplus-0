@@ -36,6 +36,31 @@ TEST(Constructors, Copy) {
   }
 }
 
+TEST(Constructors, Initialization) {
+  double test[5][5] = {{0, 0, 0, 0},
+                       {0, 0, 0, 0},
+                       {0, 0, 0, 0},
+                       {0, 0, 0, 0}};
+  S21Matrix matrix(4, 4);
+  EXPECT_EQ(matrix.GetRows(), 4);
+  EXPECT_EQ(matrix.GetCols(), 4);
+  for (int i = 0; i < matrix.GetRows(); i++) {
+    for (int j = 0; j < matrix.GetCols(); j++) {
+      EXPECT_EQ(matrix(i, j), test[i][j]);
+    }
+  }
+}
+
+TEST(Constructors, Move) {
+  S21Matrix A(4, 4);
+  A.FillMatrix(4);
+  S21Matrix C(A);
+  S21Matrix B = std::move(A);
+  EXPECT_EQ(C.EqMatrix(B), true);
+  EXPECT_EQ(C.GetRows(), B.GetRows());
+  EXPECT_EQ(C.GetCols(), B.GetCols());
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
