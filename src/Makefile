@@ -3,11 +3,28 @@
 # of the file system>
 #.PHONY clean
 
+CC = g++
+CFLAGS = -Wall -Wextra -Werror -std=c++17
+COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
+LIBS = -lgtest -lpthread
+
+MAIN_FILE = s21_matrix.cpp
+TESTS_FILE = unit_tests.cpp
+
+
 test:
-	g++ -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror -std=c++17 s21_matrix.cpp unit_tests.cpp -o test.out -lgtest -lpthread
+	$(CC) $(CFLAGS) $(COVERAGE_FLAGS) $(MAIN_FILE) $(TESTS_FILE) -o test.out $(LIBS)
 	./test.out
+
+#--no-external flag is for not include any files, except our src
+gcov_report: test
+	lcov -t "./test" -o test.info --no-external -c -d ./
+	genhtml -o report test.info
+	open report/index.html
 
 clean:
 	rm *.gcno
 	rm *.gcda
 	rm *.out
+	rm *.info
+	rm -rf report
