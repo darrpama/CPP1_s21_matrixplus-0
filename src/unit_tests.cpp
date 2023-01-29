@@ -61,6 +61,52 @@ TEST(Constructors, Move) {
   EXPECT_EQ(C.GetCols(), B.GetCols());
 }
 
+TEST(Methods, Eq) {
+  S21Matrix A(4, 4);
+  A.FillMatrix(1);
+  S21Matrix B = A;
+  EXPECT_EQ(A.EqMatrix(B), true);
+}
+
+TEST(Methods, Sum) {
+  S21Matrix A(3, 3), B(3, 3);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(3, 3);
+  C.FillMatrix(3);
+  S21Matrix tmp1 = A + B;
+  S21Matrix tmp2 = A;
+  tmp2 += B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, Sub) {
+  S21Matrix A(3, 3), B(3, 3);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(3, 3);
+  C.FillMatrix(-1);
+  S21Matrix tmp1 = A - B;
+  S21Matrix tmp2 = A;
+  tmp2 -= B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, MulM) {
+  S21Matrix A(3, 3), B(3, 3);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(3, 3);
+  C.FillMatrix(6);
+  S21Matrix tmp1 = A * B;
+  S21Matrix tmp2 = A;
+  tmp2 *= B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

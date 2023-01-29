@@ -128,6 +128,13 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
   if (this->cols_ != other.rows_) {
     throw std::invalid_argument("A * B; num cols of A should be equal num rows of B");
   }
+  S21Matrix result(this->rows_, other.cols_);
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < other.cols_; j++) {
+      result.matrix_[i][j] += this->matrix_[i][j] * other.matrix_[j][i];
+    }
+  }
+  *this = result;
 };
 
 S21Matrix S21Matrix::Transpose() {
