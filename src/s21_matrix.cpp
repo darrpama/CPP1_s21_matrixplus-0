@@ -1,9 +1,9 @@
 #include "s21_matrix.h"
 
 void S21Matrix::allocateMemory (const int rows, const int cols) {
-  this->matrix_ = new double *[rows];
+  this->matrix_ = new double *[rows]();           // new + () in the eol init data by 0
   for (int i = 0; i < cols; i++) {
-    this->matrix_[i] = new double[cols];
+    this->matrix_[i] = new double[cols]();
   }
 };
 
