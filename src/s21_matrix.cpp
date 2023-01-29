@@ -151,7 +151,16 @@ S21Matrix S21Matrix::CalcComplements() {
   if (this->rows_ != this->cols_) {
     throw std::invalid_argument("Matrix should be square");
   }
-  return S21Matrix();
+  if (this->Determinant() == 0) {
+    throw std::invalid_argument("Determinant = 0");
+  }
+  S21Matrix complementsMatrix = this->Transpose();
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->cols_; j++) {
+       complementsMatrix.matrix_[i][j] = calc_minor(i, j);
+    }
+  }
+  return complementsMatrix;
 };
 
 double S21Matrix::Determinant() {
@@ -181,8 +190,8 @@ S21Matrix S21Matrix::InverseMatrix() {
   if (this->rows_ != this->cols_) {
     throw std::invalid_argument("Matrix should be sqare");
   }
-  double determinant = this.Determinant();
-  S21Matrix inverseMatrix = this.CalcComplements();
+  double determinant = this->Determinant();
+  S21Matrix inverseMatrix = this->CalcComplements();
   inverseMatrix.MulNumber(1.0/determinant);
   return inverseMatrix;
 };
