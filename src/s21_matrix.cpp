@@ -221,6 +221,21 @@ S21Matrix S21Matrix::operator * (const S21Matrix &other) {
   return result;
 };
 
+S21Matrix& S21Matrix::operator = (const S21Matrix &other) {
+  if (this != &other) {
+    this->freeMemory();
+    this->rows_ = other.rows_;
+    this->cols_ = other.cols_;
+    this->allocateMemory(this->rows_, this->cols_);
+    for (int i = 0; i < this->cols_; i++) {
+      for (int j = 0; j < this->rows_; j++) {
+        this->matrix_[i][j] = other.matrix_[i][j];
+      }
+    }
+  }
+  return *this;
+};
+
 bool S21Matrix::operator == (const S21Matrix &other) {
   return EqMatrix(other);
 };
