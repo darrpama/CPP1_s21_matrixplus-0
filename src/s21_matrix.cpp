@@ -131,7 +131,9 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
   S21Matrix result(this->rows_, other.cols_);
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < other.cols_; j++) {
-      result.matrix_[i][j] += this->matrix_[i][j] * other.matrix_[j][i];
+      for (int k = 0; k < other.cols_; k++) {
+        result.matrix_[i][j] += this->matrix_[i][k] * other.matrix_[k][i];
+      }
     }
   }
   *this = result;
