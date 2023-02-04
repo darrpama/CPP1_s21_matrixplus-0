@@ -6,7 +6,7 @@ OS := $(shell uname -s)
 ifeq ($(OS), Linux)
 	CC = clang++
 else
-	CC = gcc
+	CC = g++
 endif
 CFLAGS = -Wall -Wextra -Werror -std=c++17
 COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
