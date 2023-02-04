@@ -2,8 +2,12 @@
 # so whenever you ask make <phony_target>, it will run, independent from the state
 # of the file system>
 #.PHONY clean
-
-CC = g++
+OS := $(shell uname -s)
+ifeq ($(OS), Linux)
+	CC = clang++
+else
+	CC = gcc
+endif
 CFLAGS = -Wall -Wextra -Werror -std=c++17
 COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
 LIBS = -lgtest -lpthread
