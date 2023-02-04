@@ -3,13 +3,13 @@
 
 using namespace std;
 
-TEST(Constructors, Default) {
+TEST(Constructors, Default1) {
   S21Matrix matrix;
   EXPECT_EQ(2, matrix.GetRows());
   EXPECT_EQ(2, matrix.GetCols());
 }
 
-TEST(Constructors, Parameters) {
+TEST(Constructors, Parameters1) {
   S21Matrix matrix1(5, 5);
   EXPECT_EQ(5, matrix1.GetRows());
   EXPECT_EQ(5, matrix1.GetCols());
@@ -23,7 +23,7 @@ TEST(Constructors, Parameters) {
   EXPECT_ANY_THROW(S21Matrix matrix8(10, -0));
 }
 
-TEST(Constructors, Copy) {
+TEST(Constructors, Copy1) {
   S21Matrix matrix1(3, 3);
   matrix1.FillMatrix(5);
   S21Matrix matrix2(matrix1);
@@ -36,7 +36,7 @@ TEST(Constructors, Copy) {
   }
 }
 
-TEST(Constructors, Initialization) {
+TEST(Constructors, Initialization1) {
   double test[5][5] = {{0, 0, 0, 0},
                        {0, 0, 0, 0},
                        {0, 0, 0, 0},
@@ -51,7 +51,7 @@ TEST(Constructors, Initialization) {
   }
 }
 
-TEST(Constructors, Move) {
+TEST(Constructors, Move1) {
   S21Matrix A(4, 4);
   A.FillMatrix(4);
   S21Matrix C(A);
@@ -61,14 +61,14 @@ TEST(Constructors, Move) {
   EXPECT_EQ(C.GetCols(), B.GetCols());
 }
 
-TEST(Methods, Eq) {
+TEST(Methods, Eq1) {
   S21Matrix A(4, 4);
   A.FillMatrix(1);
   S21Matrix B = A;
   EXPECT_EQ(A.EqMatrix(B), true);
 }
 
-TEST(Methods, Sum) {
+TEST(Methods, Sum1) {
   S21Matrix A(3, 3), B(3, 3);
   A.FillMatrix(1);
   B.FillMatrix(2);
@@ -81,7 +81,7 @@ TEST(Methods, Sum) {
   EXPECT_EQ(tmp2.EqMatrix(C), true);
 }
 
-TEST(Methods, Sub) {
+TEST(Methods, Sub1) {
   S21Matrix A(3, 3), B(3, 3);
   A.FillMatrix(1);
   B.FillMatrix(2);
@@ -94,7 +94,7 @@ TEST(Methods, Sub) {
   EXPECT_EQ(tmp2.EqMatrix(C), true);
 }
 
-TEST(Methods, MulM) {
+TEST(Methods, MulM1) {
   S21Matrix A(3, 3), B(3, 3);
   A.FillMatrix(1);
   B.FillMatrix(2);
@@ -104,6 +104,32 @@ TEST(Methods, MulM) {
   S21Matrix tmp2 = A;
   tmp2 *= B;
   EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, MulM2) {
+  S21Matrix A(3, 2), B(2, 3);
+  int k = 0;
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 2; j++) {
+      A(i, j) = ++k;
+    }
+  }
+  B.FillMatrix(2);
+  S21Matrix C(3, 3);
+  C(0, 0) = 6;
+  C(0, 1) = 6;
+  C(0, 2) = 6;
+  C(1, 0) = 14;
+  C(1, 1) = 14;
+  C(1, 2) = 14;
+  C(2, 0) = 22;
+  C(2, 1) = 22;
+  C(2, 2) = 22;
+  // S21Matrix tmp1 = A * B;
+  S21Matrix tmp2 = A;
+  tmp2 *= B;
+  // EXPECT_EQ(tmp1.EqMatrix(C), true);
   EXPECT_EQ(tmp2.EqMatrix(C), true);
 }
 

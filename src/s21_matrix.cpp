@@ -122,6 +122,7 @@ void S21Matrix::MulNumber(const double num) {
 };
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
+  std::cout << "aboba" << std::endl;
   if (!this->matrix_ || !other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
@@ -218,6 +219,7 @@ S21Matrix S21Matrix::operator - (const S21Matrix &other) {
 };
 
 S21Matrix S21Matrix::operator * (const S21Matrix &other) {
+  std::cout << "operator" << std::endl;
   S21Matrix result(*this);
   result.MulMatrix(other);
   return result;
