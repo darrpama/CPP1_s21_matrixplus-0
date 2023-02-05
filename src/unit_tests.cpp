@@ -95,6 +95,37 @@ TEST(Methods, Sum1) {
   EXPECT_EQ(tmp2.EqMatrix(C), true);
 }
 
+TEST(Methods, Sum2) {
+  S21Matrix A(8, 3), B(8, 3);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(8, 3);
+  C.FillMatrix(3);
+  S21Matrix tmp1 = A + B;
+  S21Matrix tmp2 = A;
+  tmp2 += B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, Sum3) {
+  S21Matrix A(3, 8), B(3, 8);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(3, 8);
+  C.FillMatrix(3);
+  S21Matrix tmp1 = A + B;
+  S21Matrix tmp2 = A;
+  tmp2 += B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, SumExeption) {
+  S21Matrix A(3, 2), B(3, 3);
+  EXPECT_ANY_THROW(A.SumMatrix(B));
+}
+
 TEST(Methods, Sub1) {
   S21Matrix A(3, 3), B(3, 3);
   A.FillMatrix(1);
@@ -106,6 +137,37 @@ TEST(Methods, Sub1) {
   tmp2 -= B;
   EXPECT_EQ(tmp1.EqMatrix(C), true);
   EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, Sub2) {
+  S21Matrix A(3, 8), B(3, 8);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(3, 8);
+  C.FillMatrix(-1);
+  S21Matrix tmp1 = A - B;
+  S21Matrix tmp2 = A;
+  tmp2 -= B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, Sub3) {
+  S21Matrix A(8, 3), B(8, 3);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  S21Matrix C(8, 3);
+  C.FillMatrix(-1);
+  S21Matrix tmp1 = A - B;
+  S21Matrix tmp2 = A;
+  tmp2 -= B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, SubExeption) {
+  S21Matrix A(3, 2), B(3, 3);
+  EXPECT_ANY_THROW(A.SubMatrix(B));
 }
 
 TEST(Methods, MulM1) {
@@ -142,11 +204,78 @@ TEST(Methods, MulM2) {
   C(2, 2) = 22;
   S21Matrix tmp1 = A * B;
   S21Matrix tmp2 = A;
-  tmp2.PrintMatrix();
   tmp2 *= B;
-  std::cout << "aboba" << std::endl;
   EXPECT_EQ(tmp1.EqMatrix(C), true);
   EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, MulMExeption) {
+  S21Matrix A(3, 2), B(3, 2);
+  S21Matrix C(2, 3), D(2, 3);
+  EXPECT_ANY_THROW(A.MulMatrix(B));
+  EXPECT_ANY_THROW(C.MulMatrix(D));
+}
+
+TEST(Methods, MulN1) {
+  S21Matrix A(3, 3);
+  S21Matrix B(2, 3);
+  S21Matrix C(3, 2);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  C.FillMatrix(3);
+  A.MulNumber(2);
+  B.MulNumber(2);
+  C.MulNumber(2);
+
+  S21Matrix AA(3, 3);
+  S21Matrix BB(2, 3);
+  S21Matrix CC(3, 2);
+  AA.FillMatrix(2);
+  BB.FillMatrix(4);
+  CC.FillMatrix(6);
+  EXPECT_EQ(A.EqMatrix(AA), true);
+  EXPECT_EQ(B.EqMatrix(BB), true);
+  EXPECT_EQ(C.EqMatrix(CC), true);
+}
+
+TEST(Methods, Transpose1) {
+  S21Matrix A(3, 2), B(2, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(1, 0) = 3;
+  A(1, 1) = 4;
+  A(2, 0) = 5;
+  A(2, 1) = 6;
+  B.FillMatrix(2);
+  S21Matrix AA(2, 3);
+  AA(0, 0) = 1;
+  AA(0, 1) = 3;
+  AA(0, 2) = 5;
+  AA(1, 0) = 2;
+  AA(1, 1) = 4;
+  AA(1, 2) = 6;
+  S21Matrix BB(3, 2);
+  BB.FillMatrix(2);
+  A = A.Transpose();
+  B = B.Transpose();
+  EXPECT_EQ(A.EqMatrix(AA), true);
+  EXPECT_EQ(B.EqMatrix(BB), true);
+}
+
+TEST(Methods, Determinant1) {
+  S21Matrix A(3, 3), B(4, 4);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  A(1, 0) = 4;
+  A(1, 1) = 5;
+  A(1, 2) = 6;
+  A(2, 0) = 7;
+  A(2, 1) = 8;
+  A(2, 2) = 9;
+  B.FillMatrix(2);
+  EXPECT_EQ(A.Determinant(), 0);
+  EXPECT_EQ(B.Determinant(), 0);
 }
 
 int main(int argc, char *argv[]) {

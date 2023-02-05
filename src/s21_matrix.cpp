@@ -1,5 +1,5 @@
 #include "s21_matrix.h"
-#include <iterator>
+#include <iostream>
 
 void S21Matrix::allocateMemory (const int rows, const int cols) {
   this->matrix_ = new double *[rows]();           // new + () in the eol init data by 0
@@ -281,7 +281,7 @@ double S21Matrix::calc_minor(int row, int col) {
   S21Matrix minor(this->rows_ - 1, this->cols_ - 1);
   for (int i = 0; i < minor.GetRows(); i++) {
     for (int j = 0; j < minor.GetCols(); j++) {
-      if (i != row || j != col) {
+      if (i != row && j != col) {
         minor.matrix_[i][j] = this->matrix_[i][j];
       }
     }
