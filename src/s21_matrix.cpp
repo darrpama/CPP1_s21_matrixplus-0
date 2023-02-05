@@ -1,8 +1,9 @@
 #include "s21_matrix.h"
+#include <iterator>
 
 void S21Matrix::allocateMemory (const int rows, const int cols) {
   this->matrix_ = new double *[rows]();           // new + () in the eol init data by 0
-  for (int i = 0; i < cols; i++) {
+  for (int i = 0; i < rows; i++) {
     this->matrix_[i] = new double[cols]();
   }
 };
@@ -20,7 +21,7 @@ void S21Matrix::freeMemory() {
 S21Matrix::S21Matrix() {                          //  Constr
   this->rows_ = 2;
   this->cols_ = 2;
-  allocateMemory(this->rows_, this->cols_);
+  this->allocateMemory(this->rows_, this->cols_);
 };
 
 S21Matrix::S21Matrix(int rows, int cols) {        //  Constr
@@ -29,7 +30,7 @@ S21Matrix::S21Matrix(int rows, int cols) {        //  Constr
   }
   this->rows_ = rows;
   this->cols_ = cols;
-  allocateMemory(this->rows_, this->cols_);
+  this->allocateMemory(this->rows_, this->cols_);
 };
 
 S21Matrix::S21Matrix(const S21Matrix& other) {    //  Copy
@@ -54,7 +55,7 @@ S21Matrix::S21Matrix(S21Matrix&& other) {          //  Moving
 
 S21Matrix::~S21Matrix() {
   if (this->matrix_ != nullptr) {
-    freeMemory();
+    this->freeMemory();
   }
 };
 
@@ -122,7 +123,6 @@ void S21Matrix::MulNumber(const double num) {
 };
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-  std::cout << "aboba" << std::endl;
   if (!this->matrix_ || !other.matrix_) {
     throw std::invalid_argument("Matrix's should be initialized");
   }
@@ -132,7 +132,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
   S21Matrix result(this->rows_, other.cols_);
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < other.cols_; j++) {
-      for (int k = 0; k < other.cols_; k++) {
+      for (int k = 0; k < this->cols_; k++) {
         result.matrix_[i][j] += this->matrix_[i][k] * other.matrix_[k][i];
       }
     }
@@ -219,22 +219,21 @@ S21Matrix S21Matrix::operator - (const S21Matrix &other) {
 };
 
 S21Matrix S21Matrix::operator * (const S21Matrix &other) {
-  std::cout << "operator" << std::endl;
   S21Matrix result(*this);
   result.MulMatrix(other);
   return result;
 };
 
 S21Matrix& S21Matrix::operator = (const S21Matrix &other) {
-  if (this != &other) {
+  if (this->matrix_ != nullptr) {
     this->freeMemory();
-    this->rows_ = other.rows_;
-    this->cols_ = other.cols_;
-    this->allocateMemory(this->rows_, this->cols_);
-    for (int i = 0; i < this->cols_; i++) {
-      for (int j = 0; j < this->rows_; j++) {
-        this->matrix_[i][j] = other.matrix_[i][j];
-      }
+  }
+  this->rows_ = other.rows_;
+  this->cols_ = other.cols_;
+  this->allocateMemory(other.rows_, other.cols_);
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->cols_; j++) {
+      this->matrix_[i][j] = other.matrix_[i][j];
     }
   }
   return *this;
@@ -258,16 +257,21 @@ S21Matrix S21Matrix::operator -= (const S21Matrix &other) {
   return *this;
 };
 
+S21Matrix S21Matrix::operator *= (const double &num) {
+  this->MulNumber(num);
+  return *this;
+};
+
 S21Matrix S21Matrix::operator *= (const S21Matrix &other) {
   this->MulMatrix(other);
   return *this;
 };
 
 double& S21Matrix::operator () (int row, int col) {
-  if (!matrix_) {
+  if (!this->matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
   }
-  if (row >= rows_ || col >= cols_ || row < 0 || col < 0) {
+  if (row >= this->rows_ || col >= this->cols_ || row < 0 || col < 0) {
     throw std::invalid_argument("Incorrect index of matrix");
   }
   return this->matrix_[row][col];
@@ -298,6 +302,15 @@ void S21Matrix::FillMatrix(double value) {
     for (int j = 0; j < this->cols_; j++) {
       this->matrix_[i][j] = value;
     }
+  }
+}
+
+void S21Matrix::PrintMatrix() {
+  for (int i = 0; i < this->GetRows(); i++) {
+    for (int j = 0; j < this->GetCols(); j++) {
+      std::cout << this->matrix_[i][j];
+    }
+    std::cout << std::endl;
   }
 }
 

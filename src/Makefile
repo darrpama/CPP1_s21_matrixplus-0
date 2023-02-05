@@ -8,7 +8,7 @@ ifeq ($(OS), Linux)
 else
 	CC = g++
 endif
-CFLAGS = -Wall -Wextra -Werror -std=c++17
+CFLAGS = -g -Wall -Wextra -Werror -std=c++17
 COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
 LIBS = -lgtest -lpthread
 
