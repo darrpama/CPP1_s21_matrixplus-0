@@ -278,6 +278,20 @@ TEST(Methods, Determinant1) {
   EXPECT_EQ(B.Determinant(), 0);
 }
 
+TEST(Methods, Determinant2) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 0;
+  A(0, 2) = 0;
+  A(1, 0) = 0;
+  A(1, 1) = 1;
+  A(1, 2) = 0;
+  A(2, 0) = 0;
+  A(2, 1) = 0;
+  A(2, 2) = 1;
+  EXPECT_EQ(A.Determinant(), 1);
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

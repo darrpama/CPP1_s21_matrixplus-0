@@ -286,6 +286,8 @@ double S21Matrix::calc_minor(int row, int col) {
       }
     }
   }
+  minor.PrintMatrix();
+  std::cout << std::endl;
   return minor.Determinant();
 }
 
