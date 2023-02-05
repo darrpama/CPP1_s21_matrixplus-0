@@ -193,6 +193,20 @@ double S21Matrix::Determinant() {
   return determinant;
 };
 
+double S21Matrix::calc_minor(int row, int col) {
+  S21Matrix minor(this->rows_ - 1, this->cols_ - 1);
+  for (int i = 0; i < minor.GetRows(); i++) {
+    for (int j = 0; j < minor.GetCols(); j++) {
+      if (i != row && j != col) {
+        minor.matrix_[i][j] = this->matrix_[i][j];
+      }
+    }
+  }
+  minor.PrintMatrix();
+  std::cout << std::endl;
+  return minor.Determinant();
+}
+
 S21Matrix S21Matrix::InverseMatrix() {
   if (!matrix_) {
     throw std::invalid_argument("Matrix should be initialized");
@@ -277,19 +291,6 @@ double& S21Matrix::operator () (int row, int col) {
   return this->matrix_[row][col];
 };
 
-double S21Matrix::calc_minor(int row, int col) {
-  S21Matrix minor(this->rows_ - 1, this->cols_ - 1);
-  for (int i = 0; i < minor.GetRows(); i++) {
-    for (int j = 0; j < minor.GetCols(); j++) {
-      if (i != row && j != col) {
-        minor.matrix_[i][j] = this->matrix_[i][j];
-      }
-    }
-  }
-  minor.PrintMatrix();
-  std::cout << std::endl;
-  return minor.Determinant();
-}
 
 int S21Matrix::GetRows() {
   return this->rows_;
