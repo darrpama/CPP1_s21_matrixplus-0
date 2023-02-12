@@ -262,7 +262,32 @@ TEST(Methods, Transpose1) {
   EXPECT_EQ(B.EqMatrix(BB), true);
 }
 
+// TEST(Methods, Minor1) {
+//   S21Matrix A(3, 3);
+//   A(0, 0) = 1;
+//   A(0, 1) = 2;
+//   A(0, 2) = 3;
+//   A(1, 0) = 4;
+//   A(1, 1) = 5;
+//   A(1, 2) = 6;
+//   A(2, 0) = 7;
+//   A(2, 1) = 8;
+//   A(2, 2) = 9;
+//   ASSERT_TRUE(A.calc_minor(0, 0) = 0.0);
+// }
+
 TEST(Methods, Determinant1) {
+  S21Matrix A(2, 2), B(2, 2);
+  A(0, 0) = 2;
+  A(0, 1) = 0;
+  A(1, 0) = 0;
+  A(1, 1) = 2;
+  B.FillMatrix(2);
+  EXPECT_EQ(A.Determinant(), 4);
+  EXPECT_EQ(B.Determinant(), 0);
+}
+
+TEST(Methods, Determinant2) {
   S21Matrix A(3, 3), B(4, 4);
   A(0, 0) = 1;
   A(0, 1) = 2;
@@ -278,7 +303,7 @@ TEST(Methods, Determinant1) {
   EXPECT_EQ(B.Determinant(), 0);
 }
 
-TEST(Methods, Determinant2) {
+TEST(Methods, Determinant3) {
   S21Matrix A(3, 3);
   A(0, 0) = 1;
   A(0, 1) = 0;
@@ -289,6 +314,7 @@ TEST(Methods, Determinant2) {
   A(2, 0) = 0;
   A(2, 1) = 0;
   A(2, 2) = 1;
+  A.PrintMatrix();
   EXPECT_EQ(A.Determinant(), 1);
 }
 

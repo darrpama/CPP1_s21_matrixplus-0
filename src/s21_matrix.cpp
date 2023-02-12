@@ -183,8 +183,8 @@ double S21Matrix::Determinant() {
   double determinant = 0.0;
   if (this->rows_ == 1) {
     determinant = this->matrix_[0][0];
-  } else if (this->rows_ == 2) {
-    determinant = matrix_[0][0] * matrix_[1][1] - matrix_[0][1] * matrix_[1][0];
+  } else if (this->rows_ == 2 || this->cols_ == 2) {
+    determinant = (matrix_[0][0] * matrix_[1][1]) - (matrix_[0][1] * matrix_[1][0]);
   } else {
     for (int i = 0; i < cols_; i++) {
       determinant += matrix_[0][i] * calc_minor(0, i) * pow(-1, i);
@@ -195,16 +195,22 @@ double S21Matrix::Determinant() {
 
 double S21Matrix::calc_minor(int row, int col) {
   S21Matrix minor(this->rows_ - 1, this->cols_ - 1);
-  for (int i = 0; i < minor.GetRows(); i++) {
-    for (int j = 0; j < minor.GetCols(); j++) {
-      if (i != row && j != col) {
-        minor.matrix_[i][j] = this->matrix_[i][j];
+  for (int i = 0, g = 0; i < this->GetRows(); i++) {
+    for (int j = 0, k = 0; j < this->GetCols(); j++) {
+      if (i == row || j == col) {
+        continue;
+      } else { 
+        g++;
+        k++;
+        minor.matrix_[g][k] = this->matrix_[i][j];
       }
     }
   }
   minor.PrintMatrix();
   std::cout << std::endl;
-  return minor.Determinant();
+  double determinant = minor.Determinant();
+  std::cout << determinant << std::endl;
+  return determinant;
 }
 
 S21Matrix S21Matrix::InverseMatrix() {
