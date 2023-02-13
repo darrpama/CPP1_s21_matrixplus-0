@@ -314,7 +314,6 @@ TEST(Methods, Determinant3) {
   A(2, 0) = 0;
   A(2, 1) = 0;
   A(2, 2) = 1;
-  A.PrintMatrix();
   EXPECT_EQ(A.Determinant(), 1);
 }
 
