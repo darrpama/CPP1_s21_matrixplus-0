@@ -262,20 +262,6 @@ TEST(Methods, Transpose1) {
   EXPECT_EQ(B.EqMatrix(BB), true);
 }
 
-// TEST(Methods, Minor1) {
-//   S21Matrix A(3, 3);
-//   A(0, 0) = 1;
-//   A(0, 1) = 2;
-//   A(0, 2) = 3;
-//   A(1, 0) = 4;
-//   A(1, 1) = 5;
-//   A(1, 2) = 6;
-//   A(2, 0) = 7;
-//   A(2, 1) = 8;
-//   A(2, 2) = 9;
-//   ASSERT_TRUE(A.calc_minor(0, 0) = 0.0);
-// }
-
 TEST(Methods, Determinant1) {
   S21Matrix A(2, 2), B(2, 2);
   A(0, 0) = 2;
@@ -315,6 +301,60 @@ TEST(Methods, Determinant3) {
   A(2, 1) = 0;
   A(2, 2) = 1;
   EXPECT_EQ(A.Determinant(), 1);
+}
+
+TEST(Methods, Transpose01) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 0;
+  A(0, 2) = 0;
+  A(1, 0) = 0;
+  A(1, 1) = 1;
+  A(1, 2) = 0;
+  A(2, 0) = 0;
+  A(2, 1) = 0;
+  A(2, 2) = 1;
+
+  S21Matrix answer = A.Transpose();
+
+  S21Matrix trA(3, 3);
+  trA(0, 0) = 1;
+  trA(0, 1) = 0;
+  trA(0, 2) = 0;
+  trA(1, 0) = 0;
+  trA(1, 1) = 1;
+  trA(1, 2) = 0;
+  trA(2, 0) = 0;
+  trA(2, 1) = 0;
+  trA(2, 2) = 1;
+  EXPECT_EQ(answer == trA, true);
+}
+
+TEST(Methods, Transpose02) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 0;
+  A(0, 2) = 2;
+  A(1, 0) = 0;
+  A(1, 1) = 1;
+  A(1, 2) = 0;
+  A(2, 0) = 3;
+  A(2, 1) = 0;
+  A(2, 2) = 1;
+
+  S21Matrix answer = A.Transpose();
+
+  S21Matrix trA(3, 3);
+  trA(0, 0) = 1;
+  trA(0, 1) = 0;
+  trA(0, 2) = 3;
+  trA(1, 0) = 0;
+  trA(1, 1) = 1;
+  trA(1, 2) = 0;
+  trA(2, 0) = 2;
+  trA(2, 1) = 0;
+  trA(2, 2) = 1;
+  EXPECT_EQ(answer == trA, true);
 }
 
 int main(int argc, char *argv[]) {
