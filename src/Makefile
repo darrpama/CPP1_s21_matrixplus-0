@@ -3,18 +3,22 @@
 # of the file system>
 #.PHONY clean
 OS := $(shell uname -s)
-ifeq ($(OS), Linux)
-	CC = clang++
-else
-	CC = g++
-endif
-CFLAGS = -g -Wall -Wextra -Werror -std=c++17
+CC = g++
+CFLAGS = -Wall -Wextra -Werror -std=c++17
 COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
 LIBS = -lgtest -lpthread
 
-MAIN_FILE = s21_matrix.cpp
+MAIN_FILE = s21_matrix_oop.cpp
 TESTS_FILE = unit_tests.cpp
 
+all: s21_matrix_oop.a
+
+s21_matrix_oop.a: s21_matrix_oop.o
+	ar rc s21_matrix_oop.a s21_matrix_oop.o
+	ranlib s21_matrix_oop.a
+
+s21_matrix_oop.o:
+	$(CC) $(CFLAGS) -c $(COVERAGE_FLAGS) $(MAIN_FILE) -o s21_matrix_oop.o $(LIBS)
 
 test:
 	$(CC) $(CFLAGS) $(COVERAGE_FLAGS) $(MAIN_FILE) $(TESTS_FILE) -o test.out $(LIBS)
@@ -28,8 +32,10 @@ gcov_report: test
 	rm *.info
 
 clean:
+	rm *.a
+	rm *.o
+	rm *.out
 	rm *.gcno
 	rm *.gcda
-	rm *.out
 	rm -rf test.out.dSYM
 	rm -rf report

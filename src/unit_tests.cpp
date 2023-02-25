@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
-#include "s21_matrix.h"
+#include "s21_matrix_oop.h"
 
 using namespace std;
 
@@ -384,6 +384,23 @@ TEST(Methods, Determinant3) {
   EXPECT_EQ(A.Determinant(), 1);
 }
 
+TEST(Methods, Determinant04) {
+  S21Matrix A(1, 1);
+  A(0, 0) = 1;
+  EXPECT_EQ(A.Determinant(), 1);
+}
+
+TEST(Methods, DeterminantExeption) {
+  S21Matrix A(3, 2);
+  A(0, 0) = 1;
+  A(0, 1) = 0;
+  A(1, 0) = 0;
+  A(1, 1) = 1;
+  A(2, 0) = 0;
+  A(2, 1) = 0;
+  EXPECT_ANY_THROW(A.Determinant());
+}
+
 TEST(Methods, Transpose01) {
   S21Matrix A(3, 3);
   A(0, 0) = 1;
@@ -465,6 +482,33 @@ TEST(Methods, Complements01) {
   EXPECT_EQ(answer == ComplA, true);
 }
 
+TEST(Methods, ComplementsExeption) {
+  S21Matrix A(3, 2);
+  A(0, 0) = 0.73;
+  A(0, 1) = -0.07;
+  A(1, 0) = -0.19;
+  A(1, 1) = 0.72;
+  A(2, 0) = -0.12;
+  A(2, 1) = -0.17;
+
+  EXPECT_ANY_THROW(A.CalcComplements());
+}
+
+TEST(Methods, ComplementsExeptionZeroDeterminant) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 1;
+  A(0, 2) = 1;
+  A(1, 0) = 2;
+  A(1, 1) = 2;
+  A(1, 2) = 2;
+  A(2, 0) = 3;
+  A(2, 1) = 3;
+  A(2, 2) = 3;
+
+  EXPECT_ANY_THROW(A.CalcComplements());
+}
+
 TEST(Methods, InverseMatrix01) {
   S21Matrix A(3, 3);
   A(0, 0) = 0.73;
@@ -513,6 +557,89 @@ TEST(Methods, InverseMatrix02) {
   tmp1.PrintMatrix();
 }
 
+TEST(Methods, InverseMatrixExeption) {
+  S21Matrix A(3, 2);
+  A(0, 0) = -1;
+  A(0, 1) = 2;
+  A(1, 0) = 2;
+  A(1, 1) = -1;
+  A(2, 0) = 3;
+  A(2, 1) = -2;
+
+  EXPECT_ANY_THROW(A.InverseMatrix());
+}
+
+TEST(Methods, MulEqMatrix) {
+  S21Matrix A(3, 3);
+  S21Matrix B(3, 3);
+  S21Matrix C(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  A(1, 0) = 1;
+  A(1, 1) = 2;
+  A(1, 2) = 3;
+  A(2, 0) = 1;
+  A(2, 1) = 2;
+  A(2, 2) = 3;
+
+  B(0, 0) = 1;
+  B(0, 1) = 2;
+  B(0, 2) = 3;
+  B(1, 0) = 1;
+  B(1, 1) = 2;
+  B(1, 2) = 3;
+  B(2, 0) = 1;
+  B(2, 1) = 2;
+  B(2, 2) = 3;
+
+  C(0, 0) = 6;
+  C(0, 1) = 12;
+  C(0, 2) = 18;
+  C(1, 0) = 6;
+  C(1, 1) = 12;
+  C(1, 2) = 18;
+  C(2, 0) = 6;
+  C(2, 1) = 12;
+  C(2, 2) = 18;
+
+  B *= A;
+  EXPECT_EQ(C == B, true);
+}
+
+TEST(Methods, MulEqNum) {
+  S21Matrix A(3, 3);
+  S21Matrix B(3, 3);
+  S21Matrix C(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  A(1, 0) = 1;
+  A(1, 1) = 2;
+  A(1, 2) = 3;
+  A(2, 0) = 1;
+  A(2, 1) = 2;
+  A(2, 2) = 3;
+
+  C(0, 0) = 6;
+  C(0, 1) = 12;
+  C(0, 2) = 18;
+  C(1, 0) = 6;
+  C(1, 1) = 12;
+  C(1, 2) = 18;
+  C(2, 0) = 6;
+  C(2, 1) = 12;
+  C(2, 2) = 18;
+
+  A *= 6;
+  // A.PrintMatrix();
+  EXPECT_EQ(C == A, true);
+}
+
+TEST(Methods, Brackets) {
+  S21Matrix A(2, 2);
+  EXPECT_ANY_THROW(A(-1, 2) = 10);
+}
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
