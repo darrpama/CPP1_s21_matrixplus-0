@@ -133,7 +133,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < other.cols_; j++) {
       for (int k = 0; k < this->cols_; k++) {
-        result.matrix_[i][j] += this->matrix_[i][k] * other.matrix_[k][i];
+        result.matrix_[i][j] += this->matrix_[i][k] * other.matrix_[k][j];
       }
     }
   }
@@ -167,7 +167,7 @@ S21Matrix S21Matrix::CalcComplements() {
   S21Matrix complementsMatrix = this->Transpose();
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < this->cols_; j++) {
-       complementsMatrix.matrix_[i][j] = calc_minor(i, j);
+       complementsMatrix.matrix_[i][j] = calc_minor(i, j) * pow(-1, i + j);
     }
   }
   return complementsMatrix;
@@ -223,7 +223,7 @@ S21Matrix S21Matrix::InverseMatrix() {
     throw std::invalid_argument("Matrix should be sqare");
   }
   double determinant = this->Determinant();
-  S21Matrix inverseMatrix = this->CalcComplements();
+  S21Matrix inverseMatrix = this->CalcComplements().Transpose();
   inverseMatrix.MulNumber(1.0/determinant);
   return inverseMatrix;
 };
@@ -319,7 +319,7 @@ void S21Matrix::FillMatrix(double value) {
 void S21Matrix::PrintMatrix() {
   for (int i = 0; i < this->GetRows(); i++) {
     for (int j = 0; j < this->GetCols(); j++) {
-      std::cout << this->matrix_[i][j];
+      std::cout << this->matrix_[i][j] << " ";
     }
     std::cout << std::endl;
   }

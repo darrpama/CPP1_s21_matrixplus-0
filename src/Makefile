@@ -25,10 +25,11 @@ gcov_report: test
 	lcov -t "./test" -o test.info --no-external -c -d ./
 	genhtml -o report test.info
 	open report/index.html
+	rm *.info
 
 clean:
 	rm *.gcno
 	rm *.gcda
 	rm *.out
-	rm *.info
+	rm -rf test.out.dSYM
 	rm -rf report

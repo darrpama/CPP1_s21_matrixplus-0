@@ -82,6 +82,38 @@ TEST(Methods, Eq1) {
   EXPECT_EQ(A.EqMatrix(B), true);
 }
 
+TEST(Methods, Eq2) {
+  S21Matrix A(4, 4);
+  S21Matrix B(4, 4);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  EXPECT_EQ(A.EqMatrix(B), false);
+}
+
+TEST(Methods, Eq3) {
+  S21Matrix A(4, 3);
+  S21Matrix B(4, 4);
+  A.FillMatrix(1);
+  B.FillMatrix(1);
+  EXPECT_EQ(A.EqMatrix(B), false);
+}
+
+TEST(Methods, NonEq1) {
+  S21Matrix A(4, 4);
+  S21Matrix B(4, 4);
+  A.FillMatrix(1);
+  B.FillMatrix(2);
+  EXPECT_EQ(A != B, true);
+}
+
+TEST(Methods, NonEq2) {
+  S21Matrix A(4, 4);
+  S21Matrix B(4, 4);
+  A.FillMatrix(1);
+  B.FillMatrix(1);
+  EXPECT_EQ(A != B, false);
+}
+
 TEST(Methods, Sum1) {
   S21Matrix A(3, 3), B(3, 3);
   A.FillMatrix(1);
@@ -203,10 +235,59 @@ TEST(Methods, MulM2) {
   C(2, 1) = 22;
   C(2, 2) = 22;
   S21Matrix tmp1 = A * B;
+  tmp1.PrintMatrix();
   S21Matrix tmp2 = A;
   tmp2 *= B;
   EXPECT_EQ(tmp1.EqMatrix(C), true);
   EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, MulM3) {
+  S21Matrix A(1, 3), B(3, 1);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  B(0, 0) = 4;
+  B(1, 0) = 5;
+  B(2, 0) = 6;
+  S21Matrix C(1, 1);
+  C(0, 0) = 32;
+  S21Matrix tmp1 = A * B;
+  S21Matrix tmp2 = A;
+  tmp2 *= B;
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+}
+
+TEST(Methods, MulM4) {
+  S21Matrix A(1, 3), B(3, 1);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  B(0, 0) = 4;
+  B(1, 0) = 5;
+  B(2, 0) = 6;
+  S21Matrix C(1, 1);
+  C(0, 0) = 32;
+  S21Matrix CC(3, 3);
+  CC(0, 0) = 4;
+  CC(0, 1) = 8;
+  CC(0, 2) = 12;
+  CC(1, 0) = 5;
+  CC(1, 1) = 10;
+  CC(1, 2) = 15;
+  CC(2, 0) = 6;
+  CC(2, 1) = 12;
+  CC(2, 2) = 18;
+
+  S21Matrix tmp1 = A * B;
+  S21Matrix tmp2 = A;
+  tmp2 *= B;
+  S21Matrix tmp3 = B * A;
+  tmp3.PrintMatrix();
+  EXPECT_EQ(tmp1.EqMatrix(C), true);
+  EXPECT_EQ(tmp2.EqMatrix(C), true);
+  EXPECT_EQ(tmp3.EqMatrix(CC), true);
 }
 
 TEST(Methods, MulMExeption) {
@@ -355,6 +436,81 @@ TEST(Methods, Transpose02) {
   trA(2, 1) = 0;
   trA(2, 2) = 1;
   EXPECT_EQ(answer == trA, true);
+}
+
+TEST(Methods, Complements01) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 0.73;
+  A(0, 1) = -0.07;
+  A(0, 2) = -0.12;
+  A(1, 0) = -0.19;
+  A(1, 1) = 0.72;
+  A(1, 2) = -0.15;
+  A(2, 0) = -0.12;
+  A(2, 1) = -0.17;
+  A(2, 2) = 0.92;
+
+  S21Matrix answer = A.CalcComplements();
+
+  S21Matrix ComplA(3, 3);
+  ComplA(0, 0) = 0.6369;
+  ComplA(0, 1) = 0.1928;
+  ComplA(0, 2) = 0.1187;
+  ComplA(1, 0) = 0.0848;
+  ComplA(1, 1) = 0.6572;
+  ComplA(1, 2) = 0.1325;
+  ComplA(2, 0) = 0.0969;
+  ComplA(2, 1) = 0.1323;
+  ComplA(2, 2) = 0.5123;
+  EXPECT_EQ(answer == ComplA, true);
+}
+
+TEST(Methods, InverseMatrix01) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 0.73;
+  A(0, 1) = -0.07;
+  A(0, 2) = -0.12;
+  A(1, 0) = -0.19;
+  A(1, 1) = 0.72;
+  A(1, 2) = -0.15;
+  A(2, 0) = -0.12;
+  A(2, 1) = -0.17;
+  A(2, 2) = 0.92;
+
+  S21Matrix answer = A.InverseMatrix();
+
+  S21Matrix C(3, 3);
+  C(0, 0) = 1;
+  C(1, 1) = 1;
+  C(2, 2) = 1;
+  EXPECT_EQ((answer * A) == C, true);
+  S21Matrix tmp1(3, 3);
+  tmp1 = answer * A;
+  tmp1.PrintMatrix();
+}
+
+TEST(Methods, InverseMatrix02) {
+  S21Matrix A(3, 3);
+  A(0, 0) = -1;
+  A(0, 1) = 2;
+  A(0, 2) = -2;
+  A(1, 0) = 2;
+  A(1, 1) = -1;
+  A(1, 2) = 5;
+  A(2, 0) = 3;
+  A(2, 1) = -2;
+  A(2, 2) = 4;
+
+  S21Matrix answer = A.InverseMatrix();
+
+  S21Matrix C(3, 3);
+  C(0, 0) = 1;
+  C(1, 1) = 1;
+  C(2, 2) = 1;
+  EXPECT_EQ((answer * A) == C, true);
+  S21Matrix tmp1(3, 3);
+  tmp1 = answer * A;
+  tmp1.PrintMatrix();
 }
 
 int main(int argc, char *argv[]) {
