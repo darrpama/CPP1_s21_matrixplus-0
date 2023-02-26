@@ -1,8 +1,9 @@
+#include "s21_matrix_oop.h"
 #include <gtest/gtest.h>
 #include <iostream>
-#include "s21_matrix_oop.h"
 
 using namespace std;
+using namespace S21;
 
 TEST(Constructors, Default1) {
   S21Matrix matrix;
@@ -14,7 +15,7 @@ TEST(Constructors, Parameters1) {
   S21Matrix matrix1(5, 5);
   EXPECT_EQ(5, matrix1.GetRows());
   EXPECT_EQ(5, matrix1.GetCols());
-  matrix1.PrintMatrix();
+  // matrix1.PrintMatrix();
 
   EXPECT_NO_THROW(S21Matrix matrix2(10, 10));
   EXPECT_ANY_THROW(S21Matrix matrix3(0, 10));
@@ -27,12 +28,12 @@ TEST(Constructors, Parameters1) {
 
 TEST(Constructors, Parameters2) {
   S21Matrix matrix1(5, 7);
-  matrix1.PrintMatrix();
+  // matrix1.PrintMatrix();
   EXPECT_EQ(5, matrix1.GetRows());
   EXPECT_EQ(7, matrix1.GetCols());
 
   S21Matrix matrix2(7, 5);
-  matrix2.PrintMatrix();
+  // matrix2.PrintMatrix();
   EXPECT_EQ(7, matrix2.GetRows());
   EXPECT_EQ(5, matrix2.GetCols());
 }
@@ -51,10 +52,7 @@ TEST(Constructors, Copy1) {
 }
 
 TEST(Constructors, Initialization1) {
-  double test[5][5] = {{0, 0, 0, 0},
-                       {0, 0, 0, 0},
-                       {0, 0, 0, 0},
-                       {0, 0, 0, 0}};
+  double test[5][5] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
   S21Matrix matrix(4, 4);
   EXPECT_EQ(matrix.GetRows(), 4);
   EXPECT_EQ(matrix.GetCols(), 4);
@@ -235,7 +233,7 @@ TEST(Methods, MulM2) {
   C(2, 1) = 22;
   C(2, 2) = 22;
   S21Matrix tmp1 = A * B;
-  tmp1.PrintMatrix();
+  // tmp1.PrintMatrix();
   S21Matrix tmp2 = A;
   tmp2 *= B;
   EXPECT_EQ(tmp1.EqMatrix(C), true);
@@ -284,7 +282,7 @@ TEST(Methods, MulM4) {
   S21Matrix tmp2 = A;
   tmp2 *= B;
   S21Matrix tmp3 = B * A;
-  tmp3.PrintMatrix();
+  // tmp3.PrintMatrix();
   EXPECT_EQ(tmp1.EqMatrix(C), true);
   EXPECT_EQ(tmp2.EqMatrix(C), true);
   EXPECT_EQ(tmp3.EqMatrix(CC), true);
@@ -530,7 +528,7 @@ TEST(Methods, InverseMatrix01) {
   EXPECT_EQ((answer * A) == C, true);
   S21Matrix tmp1(3, 3);
   tmp1 = answer * A;
-  tmp1.PrintMatrix();
+  // tmp1.PrintMatrix();
 }
 
 TEST(Methods, InverseMatrix02) {
@@ -554,7 +552,7 @@ TEST(Methods, InverseMatrix02) {
   EXPECT_EQ((answer * A) == C, true);
   S21Matrix tmp1(3, 3);
   tmp1 = answer * A;
-  tmp1.PrintMatrix();
+  // tmp1.PrintMatrix();
 }
 
 TEST(Methods, InverseMatrixExeption) {
@@ -636,10 +634,92 @@ TEST(Methods, MulEqNum) {
   EXPECT_EQ(C == A, true);
 }
 
-TEST(Methods, Brackets) {
+TEST(Methods, BracketsExeption) {
   S21Matrix A(2, 2);
   EXPECT_ANY_THROW(A(-1, 2) = 10);
 }
+
+TEST(Accessors, GetCols) {
+  S21Matrix A;
+  EXPECT_EQ(A.GetCols(), 2);
+}
+
+TEST(Accessors, GetRows) {
+  S21Matrix A;
+  EXPECT_EQ(A.GetRows(), 2);
+}
+
+TEST(Mutators, SetColsMore) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  A.SetCols(10);
+  S21Matrix B(2, 10);
+  B(0, 0) = 1;
+  B(0, 1) = 1;
+  B(1, 0) = 1;
+  B(1, 1) = 1;
+  EXPECT_EQ(A == B, true);
+}
+
+TEST(Mutators, SetColsLess) {
+  S21Matrix A(10, 10);
+  A.FillMatrix(1);
+  A.SetCols(3);
+  S21Matrix B(10, 3);
+  B.FillMatrix(1);
+  EXPECT_EQ(A == B, true);
+}
+
+TEST(Mutators, SetColsException1) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  EXPECT_ANY_THROW(A.SetCols(0));
+}
+
+TEST(Mutators, SetColsException2) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  EXPECT_ANY_THROW(A.SetCols(-1));
+}
+
+TEST(Mutators, SetRowsMore) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  A.SetRows(10);
+  S21Matrix B(10, 2);
+  B(0, 0) = 1;
+  B(0, 1) = 1;
+  B(1, 0) = 1;
+  B(1, 1) = 1;
+  EXPECT_EQ(A == B, true);
+}
+
+TEST(Mutators, SetRowsLess) {
+  S21Matrix A(10, 10);
+  A.FillMatrix(1);
+  A.SetRows(3);
+  S21Matrix B(3, 10);
+  B.FillMatrix(1);
+  EXPECT_EQ(A == B, true);
+}
+
+TEST(Mutators, SetRowsException1) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  EXPECT_ANY_THROW(A.SetRows(0));
+}
+
+TEST(Mutators, SetRowsException2) {
+  S21Matrix A;
+  A.FillMatrix(1);
+  EXPECT_ANY_THROW(A.SetRows(-1));
+}
+
+TEST(Methods, PrintMatrix) {
+  S21Matrix matrix;
+  EXPECT_NO_THROW(matrix.PrintMatrix());
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
