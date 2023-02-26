@@ -28,7 +28,7 @@ void S21Matrix::IsMatrixUninitialized() {
 
 void S21Matrix::IsMatrixUninitialized(const S21Matrix &other) {
   if (!this->matrix_ || !other.matrix_) {
-    throw std::invalid_argument("Matrix's should be initialized");
+    throw std::invalid_argument("Matrices should be initialized");
   }
 }
 
