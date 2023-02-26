@@ -19,8 +19,8 @@ s21_matrix_oop.a: s21_matrix_oop.o
 s21_matrix_oop.o:
 	$(CC) $(CFLAGS) -c $(COVERAGE_FLAGS) $(MAIN_FILE) -o s21_matrix_oop.o $(LIBS)
 
-test:
-	$(CC) $(CFLAGS) $(COVERAGE_FLAGS) $(MAIN_FILE) $(TESTS_FILE) -o test.out $(LIBS)
+test: s21_matrix_oop.a
+	$(CC) $(CFLAGS) $(COVERAGE_FLAGS) s21_matrix_oop.a $(TESTS_FILE) -o test.out $(LIBS)
 	./test.out
 
 #--no-external flag is for not include any files, except our src
