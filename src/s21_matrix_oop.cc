@@ -1,7 +1,5 @@
 #include "s21_matrix_oop.h"
-#include <algorithm>
-#include <cstring>
-#include <iostream>
+
 using namespace S21;
 
 void S21Matrix::AllocateMemory(const int rows, const int cols) {
